@@ -81,7 +81,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
 
         // AULA 4
     it('seleciona um produto (YouTube) por seu texto', () => {
-        cy.get('select').select('Youtube').should('have.value', 'youtube')
+        cy.get('select').select('YouTube').should('have.value', 'youtube')
         
     });
     it('seleciona um produto (Mentoria) por seu valor (value)', () => {
@@ -138,7 +138,7 @@ describe('Central de Atendimento ao Cliente TAT', function() {
             expect(input[0].files[0].name).to.equal('example.json')
         })
     });
-    it.only('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
+    it('seleciona um arquivo utilizando uma fixture para a qual foi dada um alias', () => {
         cy.fixture('example.json', {encoding: null}).as('example')
         cy.get('input[type="file"]')
         .selectFile('@example')
@@ -146,5 +146,17 @@ describe('Central de Atendimento ao Cliente TAT', function() {
             expect(input[0].files[0].name).to.equal('example.json')
         })
     });
+
+    // AULA 8
+    it('verifica que a política de privacidade abre em outra aba sem a necessidade de um clique', () => {
+        cy.get('a[target="_blank"]').should('have.attr', 'target', '_blank')
+    });
+    
+    it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
+        cy.get('a[target="_blank"]').invoke('removeAttr', 'target').should('not.have.attr', 'target')
+        cy.get('a[href*="privacy.html"]').click()
+        cy.title().should('be.equal','Central de Atendimento ao Cliente TAT - Política de privacidade')
+    });
+  
     })
   
