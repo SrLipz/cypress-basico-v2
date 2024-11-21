@@ -4,6 +4,8 @@
 // If you're unfamiliar with how Cypress works,
 // check out the link below and learn how to write your first test:
 // https://on.cypress.io/writing-first-test
+    // AULA 1
+
 describe('Central de Atendimento ao Cliente TAT', function() {
     const form = {}
     form.nome = ("Felipe")
@@ -14,9 +16,13 @@ describe('Central de Atendimento ao Cliente TAT', function() {
     beforeEach(() => {
         cy.visit('./src/index.html')
     });
+        // AULA 2
+
     it('verifica o título da aplicação', function() {
         cy.title().should('be.equal','Central de Atendimento ao Cliente TAT')
     })
+        // AULA 3
+
     it('preencher os campos e validar o envio', function() {
         cy.get('#firstName').type("Felipe")
         cy.get('#lastName').type("Lau")
@@ -72,6 +78,8 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.contains('Enviar').click()
         cy.get('.error').should('be.visible')
         });
+
+        // AULA 4
     it('seleciona um produto (YouTube) por seu texto', () => {
         cy.get('select').select('Youtube').should('have.value', 'youtube')
         
@@ -80,9 +88,20 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('select').select('mentoria').should('have.value', 'mentoria')
         
     });
-    it.only('seleciona um produto (Blog) por seu índice', () => {
+    it('seleciona um produto (Blog) por seu índice', () => {
         cy.get('select').select(1).should('have.value', 'blog')
         
     });
-  })
+
+        // AULA 5
+    
+    it('marca o tipo de atendimento "Feedback"', () => {
+        cy.get('[value = "feedback"]').check()
+    });
+    it.only('marca cada tipo de atendimento"', () => {
+        cy.get('[value = "feedback"]').check().should('be.checked')
+        cy.get('[value = "elogio"]').check().should('be.checked')
+        cy.get('[value = "ajuda"]').check().should('be.checked')
+    });
+    })
   
