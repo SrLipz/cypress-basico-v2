@@ -43,9 +43,13 @@ Esse projeto requer o Node.js e o npm instalados para executar este projeto.
 
 Execute `npm install` (ou `npm i` para a versão curta) para instalar as dependências de desenvolvimento.
 
-## Testes
-Execute `cypress:ci` para executar o teste no modo headless.
+## Testes Desktop
+Execute `npm run cypress:ci` para executar o teste no modo headless.
 Ou execute `npm run cy:open` para abrir o Cypress no modo interativo.
+
+## Testes mobile
+Execute `npm run cy:test:mobile` para executar o teste no modo headless.
+Ou execute `npm run cy:open:mobile` para abrir o Cypress no modo interativo.
 
 ## Apoie este projeto
 Se você quiser apoiar este projeto, deixe um ⭐.
