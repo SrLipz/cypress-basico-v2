@@ -28,8 +28,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#lastName').type("Lau")
         cy.get('#email').type("felipelaucs@gmail.com")
         cy.get('#open-text-area').type("Nada não!")
+        cy.clock()
         cy.get('[type="submit"]').click()
         cy.get('.success').should('be.visible')
+        cy.tick(3000)
+        cy.get('.success').should('not.be.visible')
     });
     it('Digitar um testo longo e alterar o time', function() {
         cy.get('#firstName').type("Felipe lau chaves da silva" , {delay: 0})
@@ -39,8 +42,11 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('#lastName').type("Lau")
         cy.get('#email').type("felipelaucsgmail.com")
         cy.get('#open-text-area').type("Nada não!")
+        cy.clock()
         cy.get('[type="submit"]').click()
         cy.get('.error').should('be.visible')
+        cy.tick(3000)
+        cy.get('.error').should('not.be.visible')
     });
     it('Validando que o campo telefone aceita apenas numeros', function() {
         cy.get('#firstName').type("Felipe")
@@ -152,11 +158,48 @@ describe('Central de Atendimento ao Cliente TAT', function() {
         cy.get('a[target="_blank"]').should('have.attr', 'target', '_blank')
     });
     
-    it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
-        cy.get('a[target="_blank"]').invoke('removeAttr', 'target').should('not.have.attr', 'target')
-        cy.get('a[href*="privacy.html"]').click()
-        cy.title().should('be.equal','Central de Atendimento ao Cliente TAT - Política de privacidade')
+    Cypress._.times(5, () => { 
+        it('acessa a página da política de privacidade removendo o target e então clicando no link', () => {
+            cy.get('a[target="_blank"]').invoke('removeAttr', 'target').should('not.have.attr', 'target')
+            cy.get('a[href*="privacy.html"]').click()
+            cy.title().should('be.equal','Central de Atendimento ao Cliente TAT - Política de privacidade')
+        });
+    })
+
+    // Aula 10
+    it('exibe e esconde as mensagens de sucesso e erro usando o .invoke', () => {
+        cy.get('.success')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Mensagem enviada com sucesso.')
+          .invoke('hide')
+          .should('not.be.visible')
+        cy.get('.error')
+          .should('not.be.visible')
+          .invoke('show')
+          .should('be.visible')
+          .and('contain', 'Valide os campos obrigatórios!')
+          .invoke('hide')
+          .should('not.be.visible')
+      })
+    it("preenche a area de texto usando o comando invoke", () => {
+        cy.get('#firstName').type("Felipe")
+        cy.get('#lastName').type("Lau")
+        cy.get('#email').type("felipelaucs@gmail.com")
+        cy.get('#open-text-area').invoke('val', Cypress._.repeat('012345678',5)).should('have.value', '012345678012345678012345678012345678012345678')
+        cy.get('[type="submit"]').click()
+        cy.get('.success').should('be.visible')
     });
-  
+    it.only('busca usuários corretamente', () => {
+        cy.request({
+            method: 'GET',
+            url: 'https://cac-tat.s3.eu-central-1.amazonaws.com/index.html'
+            }).then((response) => {
+              expect(response.status).to.equal(200);
+              expect(response.statusText).to.equal('OK')
+              expect(response.body).to.contains('CAC TAT')
+            })
+          })
     })
   
